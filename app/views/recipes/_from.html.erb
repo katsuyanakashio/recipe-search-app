@@ -1,0 +1,68 @@
+<%= form_with(model: recipe, local: true) do |form| %>
+  <% if recipe.errors.any? %>
+    <div class="alert alert-danger">
+      <h3><%= pluralize(recipe.errors.count, "個") %>のエラーがあります:</h3>
+      <ul>
+        <% recipe.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :title, 'レシピ名', class: 'form-label' %>
+    <%= form.text_field :title, class: 'form-control', placeholder: '例: カレーライス' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :category_id, 'カテゴリー', class: 'form-label' %>
+    <%= form.collection_select :category_id, @categories, :id, :name, 
+        { prompt: 'カテゴリーを選択' }, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :description, '説明', class: 'form-label' %>
+    <%= form.text_area :description, class: 'form-control', 
+        placeholder: 'レシピの説明を入力してください' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :ingredients, '材料', class: 'form-label' %>
+    <%= form.text_area :ingredients, class: 'form-control', 
+        placeholder: "玉ねぎ: 2個\nにんじん: 1本\nじゃがいも: 2個" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :instructions, '作り方', class: 'form-label' %>
+    <%= form.text_area :instructions, class: 'form-control', 
+        placeholder: "1. 野菜を切る\n2. 鍋で炒める\n3. 煮込む" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :cooking_time, '調理時間（分）', class: 'form-label' %>
+    <%= form.number_field :cooking_time, class: 'form-control', placeholder: '30' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :servings, '分量（人分）', class: 'form-label' %>
+    <%= form.number_field :servings, class: 'form-control', placeholder: '4' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :difficulty, '難易度', class: 'form-label' %>
+    <%= form.select :difficulty, ['簡単', '普通', '難しい'], 
+        { prompt: '難易度を選択' }, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :image_url, '画像URL', class: 'form-label' %>
+    <%= form.text_field :image_url, class: 'form-control', 
+        placeholder: 'https://example.com/image.jpg' %>
+  </div>
+
+  <div style="display: flex; gap: 10px; margin-top: 30px;">
+    <%= form.submit '保存', class: 'btn' %>
+    <%= link_to 'キャンセル', recipes_path, class: 'btn btn-secondary' %>
+  </div>
+<% end %>

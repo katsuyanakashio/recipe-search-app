@@ -1,0 +1,71 @@
+<div class="search-box">
+  <h2 style="margin-bottom: 20px; color: #667eea;">🔍 レシピを検索</h2>
+  
+  <%= search_form_for @q, url: recipes_path, method: :get, class: 'search-form' do |f| %>
+    <%= f.search_field :title_or_description_or_ingredients_cont, 
+        placeholder: 'レシピ名、材料、説明で検索...', 
+        class: 'search-input' %>
+    <%= f.submit '検索', class: 'btn' %>
+  <% end %>
+</div>
+
+<div class="filter-box">
+  <div class="filter-title">フィルター</div>
+  <div class="filter-options">
+    <%= link_to 'すべて', recipes_path, class: 'btn btn-secondary' %>
+    <%= link_to '30分以内', recipes_path(quick: true), class: 'btn btn-secondary' %>
+    
+    <% Category.all.each do |category| %>
+      <%= link_to category.name, recipes_path(category_id: category.id), class: 'btn btn-secondary' %>
+    <% end %>
+    
+    <%= link_to '簡単', recipes_path(difficulty: '簡単'), class: 'btn btn-secondary' %>
+    <%= link_to '普通', recipes_path(difficulty: '普通'), class: 'btn btn-secondary' %>
+    <%= link_to '難しい', recipes_path(difficulty: '難しい'), class: 'btn btn-secondary' %>
+  </div>
+</div>
+
+<% if @recipes.any? %>
+  <div class="recipe-grid">
+    <% @recipes.each do |recipe| %>
+      <div class="recipe-card">
+        <% if recipe.image_url.present? %>
+          <img src="<%= recipe.image_url %>" alt="<%= recipe.title %>" class="recipe-image">
+        <% else %>
+          <div class="recipe-image"></div>
+        <% end %>
+        
+        <div class="recipe-content">
+          <h3 class="recipe-title"><%= recipe.title %></h3>
+          <p class="recipe-description"><%= truncate(recipe.description, length: 80) %></p>
+          
+          <div class="recipe-meta">
+            <span>⏱️ <%= recipe.cooking_time %>分</span>
+            <span>🍽️ <%= recipe.servings %>人分</span>
+          </div>
+          
+          <div style="margin-bottom: 15px;">
+            <span class="badge badge-category"><%= recipe.category.name %></span>
+            <% if recipe.difficulty == '簡単' %>
+              <span class="badge badge-easy">簡単</span>
+            <% elsif recipe.difficulty == '普通' %>
+              <span class="badge badge-medium">普通</span>
+            <% elsif recipe.difficulty == '難しい' %>
+              <span class="badge badge-hard">難しい</span>
+            <% end %>
+          </div>
+          
+          <%= link_to '詳細を見る', recipe_path(recipe), class: 'btn' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  
+  <%= paginate @recipes %>
+<% else %>
+  <div class="detail-box" style="text-align: center; padding: 60px;">
+    <h2 style="color: #999; margin-bottom: 20px;">😔 レシピが見つかりませんでした</h2>
+    <p style="color: #666; margin-bottom: 30px;">検索条件を変更してもう一度お試しください</p>
+    <%= link_to 'すべてのレシピを見る', recipes_path, class: 'btn' %>
+  </div>
+<% end %>

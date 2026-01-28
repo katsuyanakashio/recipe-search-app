@@ -1,0 +1,27 @@
+<div class="detail-box">
+  <h1 style="color: #667eea; margin-bottom: 30px;">📚 カテゴリー一覧</h1>
+  
+  <div class="recipe-grid">
+    <% @categories.each do |category| %>
+      <div class="recipe-card">
+        <div class="recipe-image" style="display: flex; align-items: center; justify-content: center; font-size: 4em;">
+          <%= category.name == '和食' ? '🍱' :
+              category.name == '洋食' ? '🍔' :
+              category.name == '中華' ? '🥟' :
+              category.name == 'イタリアン' ? '🍕' :
+              category.name == 'デザート' ? '🍰' :
+              category.name == 'サラダ' ? '🥗' : '🍽️' %>
+        </div>
+        
+        <div class="recipe-content">
+          <h3 class="recipe-title"><%= category.name %></h3>
+          <p class="recipe-description"><%= category.description %></p>
+          <p style="color: #888; margin-bottom: 15px;">
+            <%= category.recipes.count %>件のレシピ
+          </p>
+          <%= link_to 'レシピを見る', recipes_path(category_id: category.id), class: 'btn' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
