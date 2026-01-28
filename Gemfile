@@ -16,7 +16,7 @@ gem 'turbo-rails'
 gem 'stimulus-rails'
 
 # サーバー
-gem 'puma', '~> 6.0'
+gem 'puma', '~> 7.2'
 
 # その他
 gem 'jbuilder'
